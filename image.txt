@@ -1,0 +1,55 @@
+docker version
+# ==========================
+
+docker images --help
+
+docker images
+
+docker images  -a
+
+# ==========================
+
+docker image
+
+docker image  ls 
+
+docker image  ls  -a
+
+docker image history       IMAGE_ID/REPOSITORY:TAG
+
+docker image inspect      IMAGE_ID/REPOSITORY:TAG
+
+# ==========================
+
+docker image save  -o  My_Image_fname.tar    IMAGE_ID/REPOSITORY:TAG
+
+docker              save  -o  My_Image_fname.tar    IMAGE_ID/REPOSITORY:TAG
+
+docker image save   IMAGE_ID/REPOSITORY:TAG  >  My_Image_fname.tar  
+
+docker              save   IMAGE_ID/REPOSITORY:TAG  >  My_Image_fname.tar  
+
+docker image save   IMAGE_ID/REPOSITORY:TAG   |  zip My_Image.tar.zip -
+
+docker              save   IMAGE_ID/REPOSITORY:TAG   |  zip My_Image.tar.zip -
+
+# ==========================
+
+docker image load  -i  My_Image_fname.tar
+
+docker              load   <  hinaWeb_Save.tar
+
+
+unzip My_Image.tar.zip  |  docker image load
+
+# ==========================
+
+docker image rm    IMAGE_ID/REPOSITORY:TAG
+
+# ==========================
+
+docker  image tag   IMAGE_ID   REPOSITORY:TAG 
+
+# ==========================
+
+

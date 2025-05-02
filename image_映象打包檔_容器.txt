@@ -1,0 +1,46 @@
+image 映象，映象打包檔，Container 容器，repository 貯藏庫
+
+image 映象
+	images：列出 image
+	inspect：取得 image 詳細資料
+	rmi：刪除 image
+	search：搜尋遠端 image
+	產生 image：
+		pull：從網路下載 image
+		commit：		以 Container  ---建立--->  image
+		load：			將 映象打包檔  ---匯入（載入）--->  image		 	（完整紀錄和資料）
+		import：		將 Container快照檔  ---匯入（載入）--->  image 	（沒有歷史紀錄和中繼資料）
+
+映象打包檔，Container快照檔
+	save：		將 image  ---匯出（產生）--->  映象打包檔
+	export：		將 Container  ---匯出（產生）--->  Container快照檔		（沒有資料層的堆疊資訊，沒有歷史紀錄和中繼資料）
+	
+
+Container 容器
+	ps：列出 Container
+	inspect：取得 Container 詳細資料
+	rm：刪除 Container
+	stop：停止執行中的 Container
+	start：啟動停止狀態的 Container
+	run：用 image  ---創造啟動--->  Container
+	create：用 image  ---創造--->  Container （停止狀態）
+	attach：
+	exec：
+	nsenter：
+	容器程序的 PID ：PID=$(sudo docker inspect --format "{{ .State.Pid }}" <容器的ID>)
+	log：查看容器內應用程式的訊息
+	port：查看對映 port 設定
+
+repository 貯藏庫
+	push：		將 image  ---上傳--->  repository
+
+
+
+docker rm $(docker ps -a -q)
+docker rmi $(docker images -a -q)
+
+	
+	
+sudo  docker  exec  -it  <Container 名稱或 ID>  /bin/bash
+
+

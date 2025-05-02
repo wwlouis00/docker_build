@@ -1,0 +1,14 @@
+
+# 停止全部的容器
+docker stop $(docker ps -a -q)
+
+
+
+# 注意！會清除全部的 container 及所有  container  裡的全部資料
+docker rm $(docker ps -a -q)
+
+
+# 注意！會清除全部的 image
+docker rmi $(docker images -a -q)
+
+
