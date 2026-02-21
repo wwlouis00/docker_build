@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  ubuntu_dev:
+    build: .
+    container_name: ubuntu22_container
+    volumes:
+      - ./project:/home/wwlouis
+    tty: true
+    command: ["/bin/bash"]
