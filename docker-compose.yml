@@ -1,10 +1,14 @@
 version: '3.8'
 
 services:
-  ubuntu_dev:
-    build: .
-    container_name: ubuntu22_container
-    volumes:
-      - ./project:/home/wwlouis
+  ubuntu-env:
+    image: learnwwlouis/wwlouis00_ubuntu_22:v4
+    container_name: wwlouis_ubuntu_container
+    # 分配一個虛擬終端機，保持容器在背景運行不會自動退出
     tty: true
-    command: ["/bin/bash"]
+    stdin_open: true
+    # 設定掛載路徑
+    volumes:
+      - "H:/dockerfile:/home/wwlouis"
+    # 設定容器啟動後的預設工作目錄（進去直接是這個資料夾）
+    working_dir: /home/wwlouis
