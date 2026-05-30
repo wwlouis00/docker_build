@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  ubuntu-16-container:
+    image: ubuntu:16.04
+    container_name: wwlouis_ubuntu16
+    working_dir: /home/wwlouis
+    stdin_open: true 
+    tty: true        
+    # 將本機 C:\Project 對應到容器內的 /home/wwlouis
+    volumes:
+      - C:\Project\wwlouis_ubuntu16:/home/wwlouis
+    # 設定環境變數或執行時的身分 (選用)
+    user: root
