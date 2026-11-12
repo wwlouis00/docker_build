@@ -1,0 +1,25 @@
+{
+  "name": "Engineering Template",
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "context": ".."
+  },
+  "remoteUser": "wwlouis",
+  "workspaceFolder": "/home/wwlouis/project",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": "/home/wwlouis/.venv/bin/python",
+        "python.testing.pytestEnabled": true,
+        "python.testing.unittestEnabled": false,
+        "python.analysis.autoImportCompletions": true
+      },
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "charliermarsh.ruff",
+        "ms-python.black-formatter"
+      ]
+    }
+  }
+}

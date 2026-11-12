@@ -1,7 +1,7 @@
 version: "3.9"
 
 services:
-  dev:
+  app:
     build:
       context: .
       dockerfile: Dockerfile
@@ -9,18 +9,21 @@ services:
         USERNAME: ${USERNAME:-wwlouis}
         USER_UID: ${USER_UID:-1000}
         USER_GID: ${USER_GID:-1000}
-    image: ${IMAGE_NAME:-wwlouis-dev-template:latest}
-    container_name: ${CONTAINER_NAME:-wwlouis-dev}
+    image: ${IMAGE_NAME:-wwlouis-engineering-template:latest}
+    container_name: ${CONTAINER_NAME:-wwlouis-engineering}
     user: "${USERNAME:-wwlouis}"
-    working_dir: /home/${USERNAME:-wwlouis}
+    working_dir: /home/${USERNAME:-wwlouis}/project
     tty: true
     stdin_open: true
     init: true
     environment:
       TZ: ${TZ:-Asia/Taipei}
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONUNBUFFERED: "1"
       TERM: xterm-256color
     volumes:
       - ${HOST_WORKDIR:-./workspace}:/home/${USERNAME:-wwlouis}/workspace
+      - .:/home/${USERNAME:-wwlouis}/project
     ports:
       - "${HOST_PORT:-8080}:8080"
     command: ["/bin/bash"]

@@ -1,14 +1,9 @@
-# 🐳 Docker 開發環境模板（正式可用版）
+# Project template for engineering work
 
-這個專案現在已經整理成可以直接拿來當作開發環境模板的做法。它具備以下特點：
+This repository is organized as a reusable engineering template for development inside a Docker container.
+It is intended to support a real-world workflow with structured source folders, environment variables, reproducible builds, and CI-friendly commands.
 
-- 可重複建置（Dockerfile + compose）
-- 可跨機器使用（透過 `.env` 控制路徑與使用者）
-- 以非 root 使用者執行，降低風險
-- 可立即啟動，不需要額外手動修正掛載路徑
-- 可透過 Makefile 直接管理容器
-
-## 目錄結構
+## Directory layout
 
 ```text
 .
@@ -17,102 +12,88 @@
 ├── Makefile
 ├── .env.example
 ├── .dockerignore
+├── .devcontainer/
+│   └── devcontainer.json
+├── entrypoint.sh
+├── requirements.txt
 ├── README.md
+├── src/
+├── tests/
 ├── workspace/
 └── .env
 ```
 
-## 快速開始
+## Quick start
 
-1. 複製環境設定：
+1. Copy the example environment file.
 
 ```bash
 cp .env.example .env
 ```
 
-2. 修改`.env`中的 `HOST_WORKDIR`、`HOST_PORT` 等設定：
-
-```bash
-USERNAME=wwlouis
-USER_UID=1000
-USER_GID=1000
-HOST_WORKDIR=./workspace
-HOST_PORT=8080
-```
-
-3. 啟動容器：
+2. Start the development environment.
 
 ```bash
 make up
 ```
 
-4. 進入容器：
+3. Open a shell inside the container.
 
 ```bash
 make shell
 ```
 
-5. 停止容器：
+4. Install project dependencies.
 
 ```bash
-make down
+make install
 ```
 
-## 常用指令
+5. Run tests and quality checks.
+
+```bash
+make test
+make lint
+make format
+```
+
+## Typical engineering workflow
 
 ```bash
 make up
-make rebuild
+make shell
+# work inside /home/wwlouis/project
+# edit source files in src/ or tests/
+exit
 make logs
-make shell
 make down
-make clean
 ```
 
-## 安全與可維護性重點
+## Recommended project conventions
 
-- Container 以 `${USERNAME}` 之非 root 使用者執行
-- Dockerfile 使用 `--no-install-recommends`，減少映像大小
-- `.dockerignore` 避免不必要的檔案被打包進映像
-- `.env` 保持機器屬性設定，避免寫死 `H:/...`、`C:/...` 等路徑
-- port 與工作目錄都可使用環境變數管理
+- Use `src/` for application code
+- Use `tests/` for automated tests
+- Keep runtime configuration in `.env`
+- Keep generated files outside the repo root or in `workspace/`
+- Run `make lint` and `make test` before merging changes
 
-## 版本與依賴
+## Dev Container support
 
-- Ubuntu 22.04
-- Docker Compose v3.9
-- 支援的開發模式：Python / Shell / C / 基本 CLI 工具
+A VS Code Dev Container configuration is included under `.devcontainer/devcontainer.json` for IDE workflows.
 
-## 進階建議
+## Operational notes
 
-如果這個模板要用在正式專案，可以再加上：
+- Container runs as a non-root user by default.
+- The repository root is mounted into the container workspace for live editing.
+- `workspace/` is reserved for local scratch or generated output.
+- `HOST_WORKDIR` can point to a local folder on your machine.
 
-- `requirements.txt` 或 `poetry.lock`
-- `Makefile` 內增加 `test`、`lint`、`format` 指令
-- `docker-compose.override.yml` 分開開發與生產設定
-- 監控與日誌卷宗管理
+## Production-oriented improvements applied
 
----
-
-# 原始 Docker 指令整理
-
-## 進入容器
-
-```bash
-docker compose exec dev /bin/bash
-```
-
-## 查看狀態
-
-```bash
-docker compose ps
-docker compose logs -f
-```
-
-## 清理
-
-```bash
-docker compose down --volumes --remove-orphans
-```
-
-> ⚠️ 若你要全部刪除本機 docker 資源，請額外使用 `docker system prune -f`。
+- Non-root runtime user
+- Docker build caching friendly
+- `.dockerignore` for cleaner image layers
+- `.env` configuration support
+- Makefile for standard developer commands
+- Dev Container support for editor integration
+- Python environment prepared for real project use
