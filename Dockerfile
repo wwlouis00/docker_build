@@ -3,16 +3,20 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# 安裝常用工具並建立使用者
+# Install only the tools needed for a development environment.
 RUN apt-get update && \
-    apt-get install -y sudo vim git curl && \
-    useradd -m -s /bin/bash wwlouis && \
-    echo "wwlouis ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+    apt-get install --no-install-recommends -y \
+        sudo \
+        vim \
+        git \
+        curl \
+        ca-certificates && \
+    useradd --create-home --shell /bin/bash wwlouis && \
+    echo "wwlouis ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && \
+    rm -rf /var/lib/apt/lists/*
 
-# 設定預設工作目錄
 WORKDIR /home/wwlouis
 
-# 用 wwlouis 身份啟動
 USER wwlouis
 
 CMD ["/bin/bash"]

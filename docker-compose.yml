@@ -1,15 +1,15 @@
-version: '3.8'
+version: "3.9"
 
 services:
   ubuntu-env:
-    image: learnwwlouis/wwlouis00_ubuntu_22:v4
-    container_name: wwlouis_ubuntu_container
-    # 分配一個虛擬終端機，保持容器在背景運行不會自動退出
-    user: "0"  # <-- 強制容器內部使用 root 權限運行
+    image: ${DOCKER_IMAGE:-learnwwlouis/wwlouis00_ubuntu_22:v4}
+    container_name: ${CONTAINER_NAME:-wwlouis_ubuntu_container}
+    user: "${CONTAINER_USER:-wwlouis}"
     tty: true
     stdin_open: true
-    # 設定掛載路徑
-    volumes:
-      - "H:/dockerfile:/home/wwlouis"
-    # 設定容器啟動後的預設工作目錄（進去直接是這個資料夾）
     working_dir: /home/wwlouis
+    volumes:
+      - ${HOST_WORKDIR:-./workspace}:/home/wwlouis
+    environment:
+      - TZ=Asia/Taipei
+    init: true
