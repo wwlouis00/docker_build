@@ -1,22 +1,31 @@
 # Dockerfile
 FROM ubuntu:22.04
 
-ENV DEBIAN_FRONTEND=noninteractive
+ARG USERNAME=wwlouis
+ARG USER_UID=1000
+ARG USER_GID=1000
 
-# Install only the tools needed for a development environment.
+ENV DEBIAN_FRONTEND=noninteractive \
+    TZ=Asia/Taipei
+
+# Install only the tools required for a reusable development environment.
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
+        bash \
+        ca-certificates \
+        curl \
+        git \
         sudo \
         vim \
-        git \
-        curl \
-        ca-certificates && \
-    useradd --create-home --shell /bin/bash wwlouis && \
-    echo "wwlouis ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && \
+        tzdata \
+        && \
+    groupadd --gid ${USER_GID} ${USERNAME} 2>/dev/null || true && \
+    useradd --uid ${USER_UID} --gid ${USER_GID} --create-home --shell /bin/bash ${USERNAME} 2>/dev/null || usermod -u ${USER_UID} ${USERNAME} && \
+    echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && \
     rm -rf /var/lib/apt/lists/*
 
-WORKDIR /home/wwlouis
+WORKDIR /home/${USERNAME}
 
-USER wwlouis
+USER ${USERNAME}
 
 CMD ["/bin/bash"]

@@ -1,15 +1,26 @@
 version: "3.9"
 
 services:
-  ubuntu-env:
-    image: ${DOCKER_IMAGE:-learnwwlouis/wwlouis00_ubuntu_22:v4}
-    container_name: ${CONTAINER_NAME:-wwlouis_ubuntu_container}
-    user: "${CONTAINER_USER:-wwlouis}"
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        USERNAME: ${USERNAME:-wwlouis}
+        USER_UID: ${USER_UID:-1000}
+        USER_GID: ${USER_GID:-1000}
+    image: ${IMAGE_NAME:-wwlouis-dev-template:latest}
+    container_name: ${CONTAINER_NAME:-wwlouis-dev}
+    user: "${USERNAME:-wwlouis}"
+    working_dir: /home/${USERNAME:-wwlouis}
     tty: true
     stdin_open: true
-    working_dir: /home/wwlouis
-    volumes:
-      - ${HOST_WORKDIR:-./workspace}:/home/wwlouis
-    environment:
-      - TZ=Asia/Taipei
     init: true
+    environment:
+      TZ: ${TZ:-Asia/Taipei}
+      TERM: xterm-256color
+    volumes:
+      - ${HOST_WORKDIR:-./workspace}:/home/${USERNAME:-wwlouis}/workspace
+    ports:
+      - "${HOST_PORT:-8080}:8080"
+    command: ["/bin/bash"]
